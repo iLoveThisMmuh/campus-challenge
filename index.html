@@ -1,35 +1,639 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Campus Challenge</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Aluminium Fabrication Billing</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <div class="container">
+<div class="app">
 
-        <h1>🎓 Campus Challenge</h1>
-        <p class="subtitle">Question of the Day</p>
+    <!-- ==================================================
+         BILLING SCREEN
+         ================================================== -->
 
-        <div class="streak-box">
-            🔥 Streak: <span id="streak">0</span>
+    <div class="billing-screen">
+
+        <div class="top-bar">
+            <h1>Aluminium Fabrication Billing</h1>
         </div>
 
-        <div class="question-card">
-            <h2 id="question">5 + 5 = ?</h2>
 
-            <input type="text" id="answer" placeholder="Your Answer">
+        <!-- COMPANY DETAILS -->
 
-            <button onclick="checkAnswer()">
-                Submit
+        <section class="card">
+
+            <h2>Company Details</h2>
+
+            <div class="grid-2">
+
+                <div>
+                    <label>Company Name</label>
+                    <h3>Alu Design Aluminium Fabrication Works</h3>
+                </div>
+
+                <div>
+                    <label>Mobile</label>
+                    <h3>+91 96635 94319</h3>
+                </div>
+
+                <div>
+                    <label>Address</label>
+
+                    <h3>Mastikatte, Mangalore, Karnataka</h3>
+                </div>
+
+            </div>
+
+
+            <div class="logo-upload">
+
+                <img src="AD logo.png" style="width:150px; height:150px">
+
+            </div>
+
+        </section>
+
+
+        <!-- DOCUMENT DETAILS -->
+
+        <section class="card">
+
+            <h2>Document Details</h2>
+
+            <div class="grid-3">
+
+                <div>
+
+                    <label>Document Type</label>
+
+                    <select id="documentType">
+
+                        <option value="INVOICE">
+                            Invoice
+                        </option>
+
+                        <option value="QUOTATION">
+                            Quotation
+                        </option>
+
+                        <option value="ESTIMATE">
+                            Estimate
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label>Document Number</label>
+
+                    <input
+                        type="text"
+                        id="documentNumber"
+                        readonly>
+
+                </div>
+
+
+                <div>
+
+                    <label>Date</label>
+
+                    <input
+                        type="date"
+                        id="invoiceDate">
+
+                </div>
+
+
+
+                <div>
+
+                    <label>Site Name</label>
+
+                    <input
+                        type="text"
+                        id="siteName">
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CUSTOMER DETAILS -->
+
+        <section class="card">
+
+            <h2>Customer Details</h2>
+
+            <div class="grid-2">
+
+                <div>
+
+                    <label>Customer Name</label>
+
+                    <input
+                        type="text"
+                        id="customerName">
+
+                </div>
+
+
+                <div>
+
+                    <label>Mobile Number</label>
+
+                    <input
+                        type="text"
+                        id="customerMobile">
+
+                </div>
+
+
+                <div class="full">
+
+                    <label>Customer Address</label>
+
+                    <textarea
+                        id="customerAddress">
+                    </textarea>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ITEMS / WORK -->
+
+        <section class="card items-card">
+
+            <div class="section-heading">
+
+                <h2>Items / Work</h2>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Description</th>
+                            <th>Qty</th>
+                            <th>Unit</th>
+                            <th>Rate ₹</th>
+                            <th>Amount ₹</th>
+                            <th></th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="itemsBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- ADD ITEM AT BOTTOM LEFT -->
+
+            <div class="item-footer">
+
+                <button
+                    class="btn btn-green"
+                    onclick="addItem()">
+
+                    + Add Item
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- PAYMENT -->
+
+        <section class="card">
+
+            <h2>Payment</h2>
+
+
+            <div class="totals">
+
+                <div>
+
+                    <span>Subtotal</span>
+
+                    <strong>
+                        ₹ <span id="subtotal">0.00</span>
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>Discount</span>
+
+                    <input
+                        type="number"
+                        id="discount"
+                        value="0"
+                        min="0"
+                        oninput="calculateTotals()">
+
+                </div>
+
+
+                <div>
+
+                    <span>Advance Received</span>
+
+                    <input
+                        type="number"
+                        id="advance"
+                        value="0"
+                        min="0"
+                        oninput="calculateTotals()">
+
+                </div>
+
+
+                <hr>
+
+
+                <div class="grand-total">
+
+                    <span>Total</span>
+
+                    <strong>
+                        ₹ <span id="grandTotal">0.00</span>
+                    </strong>
+
+                </div>
+
+
+                <div class="balance">
+
+                    <span>Balance</span>
+
+                    <strong>
+                        ₹ <span id="balance">0.00</span>
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- BOTTOM ACTIONS -->
+
+        <div class="bottom-actions">
+
+            <button
+                class="btn btn-blue"
+                onclick="printInvoice()">
+
+                🖨 Print Invoice
+
             </button>
-        </div>
 
-        <div id="result"></div>
+
+            <button
+                class="btn btn-green"
+                onclick="exportCSV()">
+
+                📊 Export
+
+            </button>
+
+
+            <button
+                class="btn btn-red"
+                onclick="resetInvoice()">
+
+                ↻ Reset
+
+            </button>
+
+        </div>
 
     </div>
 
-    <script src="script.js"></script>
+
+    <!-- ==================================================
+         PRINT VERSION
+         ================================================== -->
+
+    <div id="printInvoice" class="print-page">
+
+        <div class="invoice-paper">
+
+
+            <!-- HEADER -->
+
+            <div class="invoice-header">
+
+                <div class="company-print">
+
+                    <img
+                        id="printLogo"
+                        class="print-logo"
+                        src=""
+                        alt="Logo">
+
+                    <div>
+
+                        <h3 id="printCompanyName">
+                            ABC ALUMINIUM FABRICATION
+                        </h3>
+
+                        <p id="printCompanyAddress">
+                            Mangalore, Karnataka
+                        </p>
+
+                        <p>
+                            Mobile:
+                            <span id="printCompanyMobile"></span>
+                        </p>
+
+                        <p>
+                            GSTIN:
+                            <span id="printCompanyGST"></span>
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="document-title">
+
+                    <h2 id="printDocumentType">
+                        INVOICE
+                    </h2>
+
+
+                    <div class="document-info">
+
+                        <div>
+                            <span>No:</span>
+
+                            <strong id="printDocumentNumber">
+                            </strong>
+                        </div>
+
+
+                        <div>
+                            <span>Date:</span>
+
+                            <strong id="printDate">
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CUSTOMER -->
+
+            <div class="customer-box">
+
+                <div>
+
+                    <strong>BILL TO</strong>
+
+                    <h3 id="printCustomerName">
+                        -
+                    </h3>
+
+                    <p id="printCustomerAddress">
+                        -
+                    </p>
+
+                    <p>
+                        Mobile:
+                        <span id="printCustomerMobile">
+                        </span>
+                    </p>
+
+                </div>
+
+
+                <div class="job-info">
+
+                    <p>
+
+                        <strong>
+                            Work Order:
+                        </strong>
+
+                        <span id="printWorkOrder">
+                            -
+                        </span>
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>
+                            Site:
+                        </strong>
+
+                        <span id="printSiteName">
+                            -
+                        </span>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ITEMS -->
+
+            <table class="invoice-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+                        <th>Description</th>
+                        <th>Qty</th>
+                        <th>Unit</th>
+                        <th>Rate</th>
+                        <th>Amount</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="printItems">
+
+                </tbody>
+
+            </table>
+
+
+            <!-- TOTALS -->
+
+            <div class="invoice-bottom">
+
+                <div class="notes">
+
+                    <strong>Notes</strong>
+
+                    <p>
+                        Thank you for your business.
+                    </p>
+
+                </div>
+
+
+                <div class="print-totals">
+
+                    <div>
+
+                        <span>Subtotal</span>
+
+                        <strong>
+                            ₹
+                            <span id="printSubtotal">
+                                0.00
+                            </span>
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Discount</span>
+
+                        <strong>
+                            ₹
+                            <span id="printDiscount">
+                                0.00
+                            </span>
+                        </strong>
+
+                    </div>
+
+
+                    <div class="total-line">
+
+                        <span>Total</span>
+
+                        <strong>
+                            ₹
+                            <span id="printGrandTotal">
+                                0.00
+                            </span>
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>Advance</span>
+
+                        <strong>
+                            ₹
+                            <span id="printAdvance">
+                                0.00
+                            </span>
+                        </strong>
+
+                    </div>
+
+
+                    <div class="balance-line">
+
+                        <span>Balance</span>
+
+                        <strong>
+                            ₹
+                            <span id="printBalance">
+                                0.00
+                            </span>
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SIGNATURES -->
+
+            <div class="signatures">
+
+                <div>
+
+                    <div class="signature-line"></div>
+
+                    Customer Signature
+
+                </div>
+
+
+                <div>
+
+                    <div class="signature-line"></div>
+
+                    Authorized Signature
+
+                </div>
+
+            </div>
+
+
+            <div class="invoice-footer">
+
+                This is a computer generated document.
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
